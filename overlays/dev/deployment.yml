@@ -1,0 +1,56 @@
+- op: replace
+  path: /spec/template/spec/serviceAccountName
+  value: dev-gke-sa-about-me
+
+- op: replace
+  path: /spec/template/spec/imagePullSecrets/0
+  value:
+    name: dev-artifact-registry
+
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: asia-northeast1-docker.pkg.dev/abount-me/dev-about-me-repository/dev-abount-me-api
+
+- op: replace
+  path: /spec/template/spec/containers/0/env
+  value:
+    - name: DEBUG
+      valueFrom:
+        secretKeyRef:
+          name: dev-secret
+          key: DEBUG # ExternalSecretのdata.secretKey
+
+    - name: DATABASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: dev-secret
+          key: DATABASE_URL # ExternalSecretのdata.secretKey
+
+    - name: DJANGO_SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: dev-secret
+          key: DJANGO_SECRET_KEY # ExternalSecretのdata.secretKey
+
+    - name: DJANGO_SETTINGS_MODULE
+      valueFrom:
+        secretKeyRef:
+          name: dev-secret
+          key: DJANGO_SETTINGS_MODULE # ExternalSecretのdata.secretKey
+    
+    - name: DJANGO_ALLOWED_HOSTS
+      valueFrom:
+        secretKeyRef:
+          name: dev-secret
+          key: DJANGO_ALLOWED_HOSTS
+
+- op: add
+  path: /spec/template/spec/containers/1
+  value:
+    name: cloud-sql-proxy
+    image: gcr.io/cloudsql-docker/gce-proxy:1.28.0
+    command:
+      - "/cloud_sql_proxy"
+      - "-log_debug_stdout"
+      - "-instances=abount-me:asia-northeast1:dev-db-instance-about-me-2=tcp:0.0.0.0:3306" # -instances={ CloudSQLの接続名 }=tcp:0.0.0.0:3306
+      - "-term_timeout=30s"

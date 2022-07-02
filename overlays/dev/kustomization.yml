@@ -1,0 +1,22 @@
+namespace: dev-about-me
+
+bases:
+  - ../../base
+
+resources:
+  - ./external-secret.yml
+  - ./managed-cert.yml
+  - ./ingress.yml
+
+namePrefix: "dev-"
+nameSuffix: "-001"
+commonLabels:
+  app: dev-about-me
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: dev-about-me-deployment-001
+    path: ./deployment.yml

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: about-me-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: about-me-replicaset
+    spec:
+      serviceAccountName: overlaysごとに書き換える
+      imagePullSecrets:
+        - name: overlaysごとに書き換える
+      containers:
+        - name: about-me-pod
+          image: overlaysごとに書き換える
+          imagePullPolicy: Always
+          env:
+          ports:
+            - name: http
+              containerPort: 8000
+
+          # コンテナの生存チェック（ここの応答がなくなった時にコンテナが再作成される）
+          livenessProbe:
+            httpGet:
+              path: /health_check
+              port: http
+
+          # コンテナがReady状態かどうか（ここの応答がなくなった場合、Serviceからのルーティング対象から外れる）
+          readinessProbe:
+            httpGet:
+              path: /health_check
+              port: http

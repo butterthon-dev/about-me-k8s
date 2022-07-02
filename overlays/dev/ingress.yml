@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-about-me-api
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: dev-static-ip-about-me-api
+    networking.gke.io/managed-certificates: dev-managed-cert-001
+    kubernetes.io/ingress.class: "gce"
+spec:
+  defaultBackend:
+    service:
+      name: dev-about-me-001
+      port:
+        number: 80
