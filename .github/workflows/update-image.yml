@@ -44,7 +44,7 @@ jobs:
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: create-pull-request/release/${{ env.GITHUB_SHA }}
-          base: master
+          base: ${{ env.GITHUB_REF }}
           delete-branch: true
           title: |
             [${{ env.GITHUB_SHA }}] Update Container Image
