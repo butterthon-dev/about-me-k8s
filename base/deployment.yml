@@ -19,6 +19,10 @@ spec:
           ports:
             - name: http
               containerPort: 8000
+          # volumeMounts:
+          #   - name: envfile-mount
+          #     mountPath: /etc/envfile
+          #     readOnly: true              
 
           # コンテナの生存チェック（ここの応答がなくなった時にコンテナが再作成される）
           livenessProbe:
@@ -31,3 +35,11 @@ spec:
             httpGet:
               path: /health_check
               port: http
+
+      # volumes:
+      #   - name: envfile-mount
+      #     secret:
+      #       secretName: 
+      #       items:
+      #         - key:
+      #           path:

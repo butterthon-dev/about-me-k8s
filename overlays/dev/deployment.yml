@@ -7,7 +7,7 @@
     name: dev-artifact-registry
 - op: replace
   path: /spec/template/spec/containers/0/image
-  value: asia-northeast1-docker.pkg.dev/abount-me/dev-about-me-repository/dev-abount-me-api
+  value: asia-northeast1-docker.pkg.dev/abount-me/dev-about-me-api-repository/dev-abount-me-api
 - op: replace
   path: /spec/template/spec/containers/0/env
   value:
