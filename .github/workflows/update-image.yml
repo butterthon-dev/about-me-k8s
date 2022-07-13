@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: abount-me
   REGION: asia-northeast1
-  BASE_REPOGITORY_ID: about-me-repository
+  BASE_REPOGITORY_ID: about-me-api-repository
   BASE_DOCKER_IMAGE_NAME: abount-me-api
 
 jobs:
