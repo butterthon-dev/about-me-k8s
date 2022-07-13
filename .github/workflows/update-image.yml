@@ -23,14 +23,14 @@ jobs:
           echo GITHUB_REF"=${{ github.event.client_payload.ref }}" >> $GITHUB_ENV
           echo GITHUB_SHA"=${{ github.event.client_payload.github_sha }}" >> $GITHUB_ENV
 
-      - name: Update deployment.yml for dev
-        if: ${{ env.GITHUB_REF }} == 'develop'
+      - if: ${{ env.GITHUB_REF }} == 'develop'
+        name: Update deployment.yml for dev
         uses: mikefarah/yq@master
         with:
           cmd: IMAGE_TAG=' ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/dev-${{ env.BASE_REPOGITORY_ID }}/dev-${{ env.BASE_DOCKER_IMAGE_NAME }}:${{ env.GITHUB_SHA }}' yq e '.[2].value = env(IMAGE_TAG)' -i overlays/dev/deployment.yml
 
-      - name: Update deployment.yml for prd
-        if: ${{ env.GITHUB_REF }} == 'main'
+      - if: ${{ env.GITHUB_REF }} == 'main'
+        name: Update deployment.yml for prd
         uses: mikefarah/yq@master
         with:
           cmd: IMAGE_TAG=' ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/prd-${{ env.BASE_REPOGITORY_ID }}/prd-${{ env.BASE_DOCKER_IMAGE_NAME }}:${{ env.GITHUB_SHA }}' yq e '.[2].value |= env(IMAGE_TAG)' -i overlays/prd/deployment.yml
